@@ -187,7 +187,7 @@ let time = 0;
 
 const startTimer = () => {
     // setting the time to 30s
-    time = 10;
+    time = 120;
 
     // call timer every second
     const timer = setInterval(() => {

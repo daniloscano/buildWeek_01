@@ -1,5 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&display=swap');
+
+:root {
+  --accent-color: #00FFFF;
+  --answer-btn-color: linear-gradient(180deg, #D20094, #900080);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Inter", serif;
+  font-size: 16px;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('../assets/bg.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #ffffff;
+
+}
+
+header {
+  display: flex;
+  justify-content: space-around;
+  padding: 4rem 2rem;
+}
+
+#logo-img img {
+  width: 20%;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#answer-ctn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  background: url('../assets/bg.jpg') fixed;
+  background-size: cover;
+}
+
+.answer-btn {
+  width: 200px;
+  height: 50px;
+  cursor:pointer;
+  color:#ffffff;
+  border: 2px solid transparent;
+  border-radius: 50px;
+  background: url('../assets/bg.jpg') padding-box fixed,
+    linear-gradient(180deg, #ffffff 0%, rgba(128, 128, 128, 0.243) 100%) border-box;
+    background-size: cover;
+}
+
+.answer-btn:hover {
+  border: 2px solid transparent;
+  background:
+  linear-gradient(180deg, #D20094, #900080) padding-box fixed,
+    linear-gradient(0deg, #D20094, #ffffff) border-box;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  padding: 4rem;
 }
