@@ -100,10 +100,12 @@ let questionNumber = 0;
 // punteggio esame
 let examScore = 0;
 
+const headerCtn = document.querySelector('header');
+const countDown = document.getElementById('timer');
+const mainContainer = document.querySelector('main');
 const questionTitle = document.querySelector('#question');
 const answersContainer = document.querySelector('#answers-ctn');
 const showQuestionNumber = document.querySelector('#question-num');
-const mainContainer = document.querySelector('main');
 
 const displayQuestion = count => {
     questionTitle.innerText = '';
@@ -146,17 +148,19 @@ const displayAnswers = count => {
             console.log(btn.value);
             if (questionNumber !== questions.length) {
                 // aggiunte
-                time = 10;
+                clearInterval(timer);
+                startTimer();
                 //
                 displayQuestion(questionNumber);
                 displayAnswers(questionNumber);
                 displayQuestionNumber(questionNumber);
             } else {
                 // aggiunte
-                time = '';
-                setInterval(() => {}, 500);
+                clearInterval(timer);
+                countDown.innerHTML = '';
+                showQuestionNumber.innerHTML = 'Quiz completato.';
+                setInterval(displayScore(), 500);
                 //
-                displayScore();
             }
 
             console.log(answersBtns);
@@ -180,37 +184,45 @@ const displayScore = () => {
 };
 
 // TIMER
-const countDown = document.getElementById('timer');
-const headerCtn = document.querySelector('header');
-
-let time = 0;
+let timer;
 
 const startTimer = () => {
-    // setting the time to 30s
-    time = 120;
-
-    // call timer every second
-    const timer = setInterval(() => {
+    const tick = () => {
         // in each call, print remaining time to UI
-        countDown.textContent = time;
-        headerCtn.append(countDown);
-
-        // decrease 1s
-        time--;
+        countDown.innerHTML = `<p>SECONDS ${time} REMAINING</p>`;
 
         // when it reaches 0, start again, unless user is out of questions
-        if (questionNumber > questions.length) {
+        if (questionNumber === questions.length - 1 && time < 0) {
             clearInterval(timer);
-            countDown.innerText = '';
-            displayScore();
+            countDown.innerHTML = '';
+            showQuestionNumber.innerHTML = 'Quiz completato.';
+            setInterval(displayScore(), 500);
         } else if (time < 0) {
-            time = 10;
+            clearInterval(timer);
+            startTimer();
             questionNumber++;
             displayQuestion(questionNumber);
             displayAnswers(questionNumber);
             displayQuestionNumber(questionNumber);
         }
-    }, 1000);
+
+        // decrease 1s
+        time--;
+    };
+
+    // setting the time to 30s
+    let time = 3;
+
+    // call timer every second
+    tick();
+    timer = setInterval(tick, 1000);
+
+    /* To clear the timer 
+    we need the timer variable,
+    therefore we need to return it
+    before we can use it with the 
+    clearInterval function */
+    return timer;
 };
 
 displayQuestion(questionNumber);
