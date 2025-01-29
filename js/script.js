@@ -104,6 +104,7 @@ const headerCtn = document.querySelector('header');
 const countDown = document.getElementById('timer');
 const mainContainer = document.querySelector('main');
 const questionTitle = document.querySelector('#question');
+const timerProgressBar = document.querySelector('.progress');
 const answersContainer = document.querySelector('#answers-ctn');
 const showQuestionNumber = document.querySelector('#question-num');
 
@@ -147,17 +148,21 @@ const displayAnswers = count => {
             console.log(questionNumber);
             console.log(btn.value);
             if (questionNumber !== questions.length) {
-                // aggiunte
+                // timer
                 clearInterval(timer);
                 startTimer();
+                // progress bar timer
+                clearInterval(timerPB);
+                progressBarTimer();
                 //
                 displayQuestion(questionNumber);
                 displayAnswers(questionNumber);
                 displayQuestionNumber(questionNumber);
             } else {
-                // aggiunte
+                //
                 clearInterval(timer);
-                countDown.innerHTML = '';
+                clearInterval(timerPB);
+                timerProgressBar.classList.add('hidden');
                 showQuestionNumber.innerHTML = 'Quiz completato.';
                 setInterval(displayScore(), 500);
                 //
@@ -179,7 +184,9 @@ const displayScore = () => {
     mainContainer.innerHTML = '';
     const resultContainer = document.createElement('div');
     resultContainer.classList.add('result-container');
-    resultContainer.innerHTML = `<h2 class="result">Hai totalizzato ${examScore} punti!</h2>`;
+    resultContainer.innerHTML = `<h2 class="result">Hai totalizzato ${examScore} ${
+        examScore === 1 ? 'punto!' : 'punti!'
+    }</h2>`;
     mainContainer.appendChild(resultContainer);
 };
 
@@ -189,12 +196,12 @@ let timer;
 const startTimer = () => {
     const tick = () => {
         // in each call, print remaining time to UI
-        countDown.innerHTML = `<p>SECONDS ${time} REMAINING</p>`;
+        countDown.innerHTML = `<p>SECONDS <span id="timer-span">${time}</span> REMAINING</p>`;
 
         // when it reaches 0, start again, unless user is out of questions
         if (questionNumber === questions.length - 1 && time < 0) {
             clearInterval(timer);
-            countDown.innerHTML = '';
+            timerProgressBar.classList.add('hidden');
             showQuestionNumber.innerHTML = 'Quiz completato.';
             setInterval(displayScore(), 500);
         } else if (time < 0) {
@@ -211,7 +218,7 @@ const startTimer = () => {
     };
 
     // setting the time to 30s
-    let time = 3;
+    let time = 30;
 
     // call timer every second
     tick();
@@ -225,7 +232,52 @@ const startTimer = () => {
     return timer;
 };
 
+// PROGRESS BAR TIMER
+const progressBar = (progressVal, totalPercentageVal = 100) => {
+    let strokeVal = (4.64 * 100) / totalPercentageVal;
+    let x = document.querySelector('.progress-circle-prog');
+    x.style.strokeDasharray = progressVal * strokeVal + ' 999';
+};
+
+let timerPB;
+
+const progressBarTimer = () => {
+    const tick = () => {
+        // function with starting and final value
+        progressBar(timePB, 30);
+
+        if (questionNumber === questions.length - 1 && timePB > 30) {
+            clearInterval(timer);
+            timerProgressBar.classList.add('hidden');
+            showQuestionNumber.innerHTML = 'Quiz completato.';
+            setInterval(displayScore(), 500);
+        } else if (timePB > 30) {
+            clearInterval(timerPB);
+            progressBarTimer();
+            questionNumber++;
+            displayQuestion(questionNumber);
+            displayAnswers(questionNumber);
+            displayQuestionNumber(questionNumber);
+        }
+
+        // increase 1s
+        timePB++;
+    };
+
+    // starting value
+    let timePB = 0;
+
+    // call timer every second
+    tick();
+    timerPB = setInterval(tick, 1000);
+
+    return timerPB;
+};
+
+///////////////////////////////////////////////
+
 displayQuestion(questionNumber);
 displayAnswers(questionNumber);
 displayQuestionNumber(questionNumber);
 startTimer();
+progressBarTimer();
