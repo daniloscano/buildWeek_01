@@ -16,7 +16,7 @@ const questions = [
         type: 'multiple',
         difficulty: 'easy',
         question:
-            'In the programming language Java, which of these keywords would you put on a variable to make sure it doesn&#039;t get modified?',
+            "In the programming language Java, which of these keywords would you put on a variable to make sure it doesn't get modified?",
         correct_answer: 'Final',
         incorrect_answers: ['Static', 'Private', 'Public'],
     },
@@ -177,7 +177,7 @@ const displayAnswers = count => {
 
 const displayQuestionNumber = count => {
     count = count + 1;
-    showQuestionNumber.innerText = `QUESTION ${count} / ${questions.length}`;
+    showQuestionNumber.innerHTML = `QUESTION ${count} / <span class="question-num-span">${questions.length}</span>`;
 };
 
 const displayScore = () => {

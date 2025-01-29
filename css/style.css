@@ -43,21 +43,31 @@ main {
     align-items: center;
 }
 
-#answer-ctn {
+#question {
+    font-size: 4rem;
+    font-weight: 600;
+    width: 1400px;
+    text-align: center;
+}
+
+#answers-ctn {
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-wrap: wrap;
-    background: url('../assets/bg.jpg') fixed;
+    align-items: center;
+    justify-content: center;
     background-size: cover;
+    width: 1500px;
+    margin-top: 100px;
 }
 
 .answer-btn {
-    width: 200px;
-    height: 50px;
+    margin: 20px 10px;
+    width: 500px;
+    height: 100px;
+    font-size: 24px;
     cursor: pointer;
     color: #ffffff;
-    border: 2px solid transparent;
+    border: 3px solid transparent;
     border-radius: 50px;
     background: url('../assets/bg.jpg') padding-box fixed,
         linear-gradient(180deg, #ffffff 0%, rgba(128, 128, 128, 0.243) 100%)
@@ -71,10 +81,24 @@ main {
         linear-gradient(0deg, #d20094, #ffffff) border-box;
 }
 
+.result {
+    font-size: 3rem;
+}
+
 footer {
     display: flex;
     justify-content: center;
     padding: 4rem;
+}
+
+#question-num {
+    font-size: 2rem;
+    letter-spacing: 5px;
+    margin-bottom: 50px;
+}
+
+.question-num-span {
+    color: #d20094;
 }
 
 /* PROGRESS BAR TIMER */
@@ -107,21 +131,13 @@ footer {
     transition: stroke-dasharray 0.7s linear 0s;
 }
 
-.progress-text {
-    width: 100%;
-    position: absolute;
-    top: 60px;
-    text-align: center;
-    font-size: 2em;
-}
-
 /* Timer dentro alla Progress Bar */
 #timer {
-    position: absolute;
     left: 40px;
-    top: -25px;
+    top: 32px;
     font-size: 14px;
-    width: fit-content;
+    position: absolute;
+    text-align: center;
 }
 
 #timer-span {
