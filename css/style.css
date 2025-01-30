@@ -29,7 +29,7 @@ body {
 header {
     display: flex;
     justify-content: space-around;
-    padding: 4rem 2rem;
+    padding: 3rem 2rem;
 }
 
 #logo-img img {
@@ -37,6 +37,7 @@ header {
 }
 
 main {
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -44,10 +45,12 @@ main {
 }
 
 #question {
+    font-family: 'Outfit', sans-serif;
     font-size: 4rem;
     font-weight: 600;
-    width: 1400px;
+    width: 90vw;;
     text-align: center;
+    padding-bottom: 3rem;
 }
 
 #answers-ctn {
@@ -55,9 +58,9 @@ main {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
     background-size: cover;
-    width: 1500px;
-    margin-top: 100px;
+    width: 80vw;
 }
 
 .answer-btn {
@@ -88,7 +91,7 @@ main {
 footer {
     display: flex;
     justify-content: center;
-    padding: 4rem;
+    padding: 3rem 0 1.4rem;
 }
 
 #question-num {
@@ -108,7 +111,7 @@ footer {
     width: 160px;
     cursor: pointer;
     margin-right: 50px;
-    scale: 1.3;
+    scale: 1;
 }
 
 .progress-circle {
@@ -118,13 +121,13 @@ footer {
 
 .progress-circle-back {
     fill: none;
-    stroke: #900080;
+    stroke: var(--accent-color);
     stroke-width: 10px;
 }
 
 .progress-circle-prog {
     fill: none;
-    stroke: #d20094;
+    stroke: #900080;
     stroke-width: 10px;
     stroke-dasharray: 0 999;
     stroke-dashoffset: 0px;
