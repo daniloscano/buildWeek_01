@@ -111,7 +111,6 @@ footer {
     width: 160px;
     cursor: pointer;
     margin-right: 50px;
-    scale: 1;
 }
 
 .progress-circle {
@@ -121,17 +120,17 @@ footer {
 
 .progress-circle-back {
     fill: none;
-    stroke: var(--accent-color);
+    stroke: #900080;
     stroke-width: 10px;
 }
 
 .progress-circle-prog {
     fill: none;
-    stroke: #900080;
+    stroke: var(--accent-color);
     stroke-width: 10px;
     stroke-dasharray: 0 999;
     stroke-dashoffset: 0px;
-    transition: stroke-dasharray 0.7s linear 0s;
+    transition: stroke-dasharray 0.4s linear 0s;
 }
 
 /* Timer dentro alla Progress Bar */
