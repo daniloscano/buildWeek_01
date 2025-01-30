@@ -94,10 +94,7 @@ const questions = [
     },
 ];
 
-// numero della domanda
 let questionNumber = 0;
-
-// punteggio esame
 let examScore = 0;
 
 const headerCtn = document.querySelector('header');
@@ -109,14 +106,11 @@ const answersContainer = document.querySelector('#answers-ctn');
 const showQuestionNumber = document.querySelector('#question-num');
 
 const displayQuestion = count => {
-    questionTitle.innerText = '';
-    const questionText = questions[count].question;
-    questionTitle.innerText = questionText;
+    questionTitle.innerText = questions[count].question;
 };
 
 const displayAnswers = count => {
     answersContainer.innerHTML = '';
-    console.log(`displayAnswers: ${count}`);
     const answers = questions[count].incorrect_answers;
     answers.push(questions[count].correct_answer);
 
@@ -127,52 +121,24 @@ const displayAnswers = count => {
     answers.forEach(answer => {
         const answerBtn = document.createElement('button');
         answerBtn.classList.add('answer-btn');
-
-        if (answer === questions[count].correct_answer) {
-            answerBtn.innerText = answer;
-            answerBtn.value = 1;
-        } else {
-            answerBtn.innerText = answer;
-            answerBtn.value = 0;
-        }
-
+        answerBtn.innerText = answer;
         answersContainer.appendChild(answerBtn);
-    });
 
-    let answersBtns = document.querySelectorAll('.answer-btn');
+        answerBtn.addEventListener('click', event => {
+            let isCorrectAnswer = event.target.innerText === questions[questionNumber].correct_answer;
+            let isLastQuestion = questionNumber + 1 === questions.length;
 
-    answersBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            questionNumber++;
-            examScore += parseInt(btn.value);
-            console.log(questionNumber);
-            console.log(btn.value);
-            if (questionNumber !== questions.length) {
-                // timer
-                clearInterval(timer);
-                startTimer();
-                // progress bar timer
-                clearInterval(timerPB);
-                progressBarTimer();
-                //
-                displayQuestion(questionNumber);
-                displayAnswers(questionNumber);
-                displayQuestionNumber(questionNumber);
+            if (isCorrectAnswer && !isLastQuestion) {
+                examScore++;
+                nextQuestion();
+            } else if (!isCorrectAnswer && !isLastQuestion) {
+                nextQuestion();
             } else {
-                //
                 clearInterval(timer);
-                clearInterval(timerPB);
-                timerProgressBar.classList.add('hidden');
-                showQuestionNumber.innerHTML = 'Quiz completato.';
-                setInterval(displayScore(), 500);
-                //
-            }
-
-            console.log(answersBtns);
+                displayScore();
+            };
         });
     });
-
-    console.log(answersBtns);
 };
 
 const displayQuestionNumber = count => {
@@ -180,14 +146,24 @@ const displayQuestionNumber = count => {
     showQuestionNumber.innerHTML = `QUESTION ${count} / <span class="question-num-span">${questions.length}</span>`;
 };
 
+const nextQuestion = () => {
+    questionNumber++;
+    displayQuestion(questionNumber);
+    displayAnswers(questionNumber);
+    displayQuestionNumber(questionNumber);
+    clearInterval(timer);
+    startTimer(timer);
+};
+
 const displayScore = () => {
     mainContainer.innerHTML = '';
     const resultContainer = document.createElement('div');
     resultContainer.classList.add('result-container');
-    resultContainer.innerHTML = `<h2 class="result">Hai totalizzato ${examScore} ${
-        examScore === 1 ? 'punto!' : 'punti!'
-    }</h2>`;
+    resultContainer.innerHTML = `<h2 class="result">Hai totalizzato ${examScore} 
+    ${examScore === 1 ? 'punto!' : 'punti!'}</h2>`;
     mainContainer.appendChild(resultContainer);
+    showQuestionNumber.innerHTML = 'Quiz completato';
+    timerProgressBar.innerHTML = '';
 };
 
 // TIMER
@@ -195,23 +171,16 @@ let timer;
 
 const startTimer = () => {
     const tick = () => {
+        progressBar(time, 30);
         // in each call, print remaining time to UI
         countDown.innerHTML = `<p>SECONDS <span id="timer-span">${time}</span> REMAINING</p>`;
 
-        // when it reaches 0, start again, unless user is out of questions
         if (questionNumber === questions.length - 1 && time < 0) {
             clearInterval(timer);
-            timerProgressBar.classList.add('hidden');
-            showQuestionNumber.innerHTML = 'Quiz completato.';
             setInterval(displayScore(), 500);
         } else if (time < 0) {
-            clearInterval(timer);
-            startTimer();
-            questionNumber++;
-            displayQuestion(questionNumber);
-            displayAnswers(questionNumber);
-            displayQuestionNumber(questionNumber);
-        }
+            nextQuestion();
+        };
 
         // decrease 1s
         time--;
@@ -239,45 +208,7 @@ const progressBar = (progressVal, totalPercentageVal = 100) => {
     x.style.strokeDasharray = progressVal * strokeVal + ' 999';
 };
 
-let timerPB;
-
-const progressBarTimer = () => {
-    const tick = () => {
-        // function with starting and final value
-        progressBar(timePB, 30);
-
-        if (questionNumber === questions.length - 1 && timePB > 30) {
-            clearInterval(timer);
-            timerProgressBar.classList.add('hidden');
-            showQuestionNumber.innerHTML = 'Quiz completato.';
-            setInterval(displayScore(), 500);
-        } else if (timePB > 30) {
-            clearInterval(timerPB);
-            progressBarTimer();
-            questionNumber++;
-            displayQuestion(questionNumber);
-            displayAnswers(questionNumber);
-            displayQuestionNumber(questionNumber);
-        }
-
-        // increase 1s
-        timePB++;
-    };
-
-    // starting value
-    let timePB = 0;
-
-    // call timer every second
-    tick();
-    timerPB = setInterval(tick, 1000);
-
-    return timerPB;
-};
-
-///////////////////////////////////////////////
-
 displayQuestion(questionNumber);
 displayAnswers(questionNumber);
 displayQuestionNumber(questionNumber);
 startTimer();
-progressBarTimer();
