@@ -16,7 +16,7 @@ const questions = [
         type: 'multiple',
         difficulty: 'easy',
         question:
-            "In the programming language Java, which of these keywords would you put on a variable to make sure it doesn't get modified?",
+            "In the programming language Java, which of these keywords would you put on a variable to make sure it doesn\'t get modified?",
         correct_answer: 'Final',
         incorrect_answers: ['Static', 'Private', 'Public'],
     },
@@ -104,13 +104,33 @@ const questionTitle = document.querySelector('#question');
 const timerProgressBar = document.querySelector('.progress');
 const answersContainer = document.querySelector('#answers-ctn');
 const showQuestionNumber = document.querySelector('#question-num');
+const loader = document.querySelector('.progress-circle-prog');
 
-const displayQuestion = count => {
-    questionTitle.innerText = questions[count].question;
+let timer;
+
+const startTimer = () => {
+    let timeLeft = 30;
+    countDown.innerHTML = `<p>SECONDS <span id="timer-span">${timeLeft}</span> REMAINING</p>`;
+    loader.style.strokeDasharray = `${Math.floor(timeLeft * 15.46)} 999`;
+
+    timer = setInterval(() => {
+        timeLeft--;
+        countDown.innerHTML = `<p>SECONDS <span id="timer-span">${timeLeft}</span> REMAINING</p>`;
+        loader.style.strokeDasharray = `${Math.floor(timeLeft * 15.46)} 999`;
+
+        if (timeLeft < 0 && questionNumber === questions.length -1) {
+            clearInterval(timer);
+            displayScore();
+        } else if (timeLeft < 0) {
+            clearInterval(timer);
+            nextQuestion();
+        }
+    }, 1000);
 };
 
-const displayAnswers = count => {
+const displayQuestion = count => {
     answersContainer.innerHTML = '';
+    questionTitle.innerText = questions[count].question;
     const answers = questions[count].incorrect_answers;
     answers.push(questions[count].correct_answer);
 
@@ -125,9 +145,7 @@ const displayAnswers = count => {
         answersContainer.appendChild(answerBtn);
 
         answerBtn.addEventListener('click', event => {
-            let isCorrectAnswer =
-                event.target.innerText ===
-                questions[questionNumber].correct_answer;
+            let isCorrectAnswer = event.target.innerText === questions[questionNumber].correct_answer;
             let isLastQuestion = questionNumber + 1 === questions.length;
 
             if (isCorrectAnswer && !isLastQuestion) {
@@ -135,26 +153,24 @@ const displayAnswers = count => {
                 nextQuestion();
             } else if (!isCorrectAnswer && !isLastQuestion) {
                 nextQuestion();
-            } else {
-                clearInterval(timer);
+            } else if (isCorrectAnswer && isLastQuestion) {
+                clearInterval(startTimer);
+                examScore++;
                 displayScore();
-            }
+            } else if (!isCorrectAnswer && isLastQuestion) {
+                clearInterval(startTimer);
+                displayScore();
+            };
         });
     });
-};
-
-const displayQuestionNumber = count => {
-    count = count + 1;
-    showQuestionNumber.innerHTML = `QUESTION ${count} / <span class="purple-text">${questions.length}</span>`;
+    showQuestionNumber.innerHTML = `QUESTION ${questionNumber+1} / <span class="purple-text">${questions.length}</span>`;
 };
 
 const nextQuestion = () => {
     questionNumber++;
-    displayQuestion(questionNumber);
-    displayAnswers(questionNumber);
-    displayQuestionNumber(questionNumber);
     clearInterval(timer);
-    startTimer(timer);
+    displayQuestion(questionNumber);
+    startTimer();
 };
 
 const displayScore = () => {
@@ -168,44 +184,5 @@ const displayScore = () => {
     timerProgressBar.innerHTML = '';
 };
 
-// TIMER
-const progressBar = (progressVal, totalPercentageVal = 100) => {
-    let strokeVal = (4.64 * 100) / totalPercentageVal;
-    let x = document.querySelector('.progress-circle-prog');
-    x.style.strokeDasharray = progressVal * strokeVal + ' 999';
-};
-
-let timer;
-
-const startTimer = () => {
-    const tick = () => {
-        progressBar(time, 30);
-        // in each call, print remaining time to UI
-        countDown.innerHTML = `<p>SECONDS <span id="timer-span">${time}</span> REMAINING</p>`;
-
-        if (questionNumber === questions.length - 1 && time < 0) {
-            clearInterval(timer);
-            setInterval(displayScore(), 500);
-        } else if (time < 0) {
-            nextQuestion();
-        }
-
-        // decrease 1s
-        time--;
-    };
-
-    // setting the time to 30s
-    let time = 30;
-
-    // call timer every second
-    tick();
-    timer = setInterval(tick, 1000);
-
-    /* To clear the timer we need the timer variable, therefore we need to return it before we can use it in the clearInterval function */
-    return timer;
-};
-
 displayQuestion(questionNumber);
-displayAnswers(questionNumber);
-displayQuestionNumber(questionNumber);
 startTimer();
