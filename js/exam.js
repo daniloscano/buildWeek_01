@@ -125,7 +125,9 @@ const displayAnswers = count => {
         answersContainer.appendChild(answerBtn);
 
         answerBtn.addEventListener('click', event => {
-            let isCorrectAnswer = event.target.innerText === questions[questionNumber].correct_answer;
+            let isCorrectAnswer =
+                event.target.innerText ===
+                questions[questionNumber].correct_answer;
             let isLastQuestion = questionNumber + 1 === questions.length;
 
             if (isCorrectAnswer && !isLastQuestion) {
@@ -136,14 +138,14 @@ const displayAnswers = count => {
             } else {
                 clearInterval(timer);
                 displayScore();
-            };
+            }
         });
     });
 };
 
 const displayQuestionNumber = count => {
     count = count + 1;
-    showQuestionNumber.innerHTML = `QUESTION ${count} / <span class="question-num-span">${questions.length}</span>`;
+    showQuestionNumber.innerHTML = `QUESTION ${count} / <span class="purple-text">${questions.length}</span>`;
 };
 
 const nextQuestion = () => {
@@ -159,14 +161,20 @@ const displayScore = () => {
     mainContainer.innerHTML = '';
     const resultContainer = document.createElement('div');
     resultContainer.classList.add('result-container');
-    resultContainer.innerHTML = `<h2 class="result">Hai totalizzato ${examScore} 
-    ${examScore === 1 ? 'punto!' : 'punti!'}</h2>`;
+    resultContainer.innerHTML = `<h2 class="result">You gave the right answer to <span class="purple-text">${examScore}</span> 
+    ${examScore === 1 ? 'question!' : 'questions!'}</h2>`;
     mainContainer.appendChild(resultContainer);
-    showQuestionNumber.innerHTML = 'Quiz completato';
+    showQuestionNumber.innerHTML = 'Quiz completed';
     timerProgressBar.innerHTML = '';
 };
 
 // TIMER
+const progressBar = (progressVal, totalPercentageVal = 100) => {
+    let strokeVal = (4.64 * 100) / totalPercentageVal;
+    let x = document.querySelector('.progress-circle-prog');
+    x.style.strokeDasharray = progressVal * strokeVal + ' 999';
+};
+
 let timer;
 
 const startTimer = () => {
@@ -180,7 +188,7 @@ const startTimer = () => {
             setInterval(displayScore(), 500);
         } else if (time < 0) {
             nextQuestion();
-        };
+        }
 
         // decrease 1s
         time--;
@@ -193,19 +201,8 @@ const startTimer = () => {
     tick();
     timer = setInterval(tick, 1000);
 
-    /* To clear the timer 
-    we need the timer variable,
-    therefore we need to return it
-    before we can use it with the 
-    clearInterval function */
+    /* To clear the timer we need the timer variable, therefore we need to return it before we can use it in the clearInterval function */
     return timer;
-};
-
-// PROGRESS BAR TIMER
-const progressBar = (progressVal, totalPercentageVal = 100) => {
-    let strokeVal = (4.64 * 100) / totalPercentageVal;
-    let x = document.querySelector('.progress-circle-prog');
-    x.style.strokeDasharray = progressVal * strokeVal + ' 999';
 };
 
 displayQuestion(questionNumber);

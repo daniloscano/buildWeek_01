@@ -7,7 +7,7 @@
     color: white;
 }
 
-body{
+body {
     font-family: 'Inter', serif;
     font-size: 20px;
     font-weight: 300;
@@ -16,14 +16,15 @@ body{
     padding-right: 10%;
     background-image: url('../assets/bg.jpg');
     background-size: cover;
+    height: 100vh;
 }
 
-#logo_img{
+#logo_img {
     width: 150px;
     height: fit-content;
 }
 
-#title{
+#title {
     font-family: 'Outfit', serif;
     font-size: 60px;
     margin-top: 70px;
@@ -37,17 +38,17 @@ body{
     font-weight: 700;
 }
 
-#instruction{
-    color: #D20094;
+#instruction {
+    color: #d20094;
     font-size: 36px;
     margin-bottom: 10px;
 }
 
-p{
+p {
     margin-bottom: 60px;
 }
 
-#rule_list{
+#rule_list {
     padding-left: 2%;
     margin-bottom: 100px;
 }
@@ -56,14 +57,14 @@ p{
     padding: 8px 0;
 }
 
-#buttons{
+#buttons {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 80px;
 }
 
-#proceed_button{
+#proceed_button {
     display: flex;
     justify-content: center;
     align-items: center;

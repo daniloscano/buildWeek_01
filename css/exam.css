@@ -46,9 +46,9 @@ main {
 
 #question {
     font-family: 'Outfit', sans-serif;
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 600;
-    width: 90vw;;
+    width: 90vw;
     text-align: center;
     padding-bottom: 3rem;
 }
@@ -86,6 +86,7 @@ main {
 
 .result {
     font-size: 3rem;
+    margin-bottom: 200px;
 }
 
 footer {
@@ -96,11 +97,11 @@ footer {
 
 #question-num {
     font-size: 2rem;
-    letter-spacing: 5px;
+    letter-spacing: 3px;
     margin-bottom: 50px;
 }
 
-.question-num-span {
+.purple-text {
     color: #d20094;
 }
 
